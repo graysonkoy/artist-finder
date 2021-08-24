@@ -61,7 +61,7 @@ const TopArtists = (): ReactElement => {
 								/>
 								<br />
 								<div className="artist-name">{artist.name}</div>
-								{/* <div className="artist-genres">
+								<div className="artist-genres">
 									{artist.genres.map((genre) => {
 										return (
 											<div className="artist-genre" key={genre}>
@@ -69,7 +69,7 @@ const TopArtists = (): ReactElement => {
 											</div>
 										);
 									})}
-								</div> */}
+								</div>
 							</div>
 						);
 					})}
