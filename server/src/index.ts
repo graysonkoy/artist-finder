@@ -21,30 +21,30 @@ app.use("/api", apiRouter);
 
 // error handlers
 app.use((req, res, next) => {
-	// 404s
-	res.status(404).json({
-		error: true,
-		message: "Not Found",
-	});
+  // 404s
+  res.status(404).json({
+    error: true,
+    message: "Not Found",
+  });
 });
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-	// general
-	let dev = req.app.get("env") === "development";
-	let errStatus = err.status || 500;
+  // general
+  let dev = req.app.get("env") === "development";
+  let errStatus = err.status || 500;
 
-	res.status(errStatus).json({
-		error: true,
-		message: dev ? err.message : "An unknown error occurred",
-	});
+  res.status(errStatus).json({
+    error: true,
+    message: dev ? err.message : "An unknown error occurred",
+  });
 });
 
 // start server
 app
-	.listen(port, () => {
-		console.log(`App started on port ${port}`);
-	})
-	.on("error", (e) => {
-		console.log(`Fatal error: ${e.message}`);
-		process.exit();
-	});
+  .listen(port, () => {
+    console.log(`App started on port ${port}`);
+  })
+  .on("error", (e) => {
+    console.log(`Fatal error: ${e.message}`);
+    process.exit();
+  });
