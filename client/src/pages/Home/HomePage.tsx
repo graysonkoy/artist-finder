@@ -35,13 +35,9 @@ const TopArtists = (): ReactElement => {
 						popularity: artist.popularity,
 					}))
 				);
-
-				console.log("Got top artists", data);
 			})
 			.finally(() => setLoading(false));
 	}, []);
-
-	console.log("a artists", topArtists);
 
 	return (
 		<div>
@@ -81,6 +77,21 @@ const TopArtists = (): ReactElement => {
 	);
 };
 
+const Test = (): ReactElement => {
+	const [artists, setArtists] = useState<ArtistInterface>();
+
+	const auth = useContext(AuthContext);
+
+	useEffect(() => {
+		auth.apiGet("/api/get-artists").then((artistsData) => {
+			console.log("artists", artistsData);
+			setArtists(artistsData);
+		});
+	}, []);
+
+	return <div></div>;
+};
+
 const HomePage = (): ReactElement => {
 	const auth = useContext(AuthContext);
 
@@ -89,7 +100,8 @@ const HomePage = (): ReactElement => {
 			<h1>Welcome</h1>
 			{auth.spotifyIsLoggedIn() ? (
 				<div>
-					<TopArtists />
+					{/* <TopArtists /> */}
+					<Test />
 
 					<Link to="/auth/logout">
 						<Button variant="contained" color="primary">

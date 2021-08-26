@@ -14,7 +14,7 @@ apiRouter.get(
 		if (!errors.isEmpty())
 			return res.status(400).json({ errors: errors.array() });
 
-		const authCode = req.query.authCode;
+		const { authCode } = req.query;
 
 		try {
 			const data = {
@@ -53,29 +53,46 @@ const spotifyHeaders = (accessToken: string) => ({
 });
 
 apiRouter.get(
-	"/get-top-artists",
+	"/get-artists",
 
 	query("spotifyAccessToken").isString(),
+	query("topArtistTimeRange").default("long_term").isString(),
+	query("numTopArtists").default(3).isInt({ min: 1, max: 50 }),
 
 	async (req, res, next) => {
 		const errors = validationResult(req);
 		if (!errors.isEmpty())
 			return res.status(400).json({ errors: errors.array() });
 
-		const spotifyAccessToken = req.query.spotifyAccessToken;
+		const { spotifyAccessToken, topArtistTimeRange, numTopArtists } = req.query;
 
-		// options
-		const timeRange = "long_term";
-		const numArtists = 50;
+		// get top spotify artists
+		try {
+			const topArtists = (await axios.get(
+				`https://api.spotify.com/v1/me/top/artists?time_range=${topArtistTimeRange}&limit=${numTopArtists}`,
+				spotifyHeaders(spotifyAccessToken)
+			)).data.items;
 
-		const response = await axios.get(
-			`https://api.spotify.com/v1/me/top/artists?time_range=${timeRange}&limit=${numArtists}`,
-			spotifyHeaders(spotifyAccessToken)
-		);
+			console.log("top artists", topArtists);
+	
+			// get artist locations
+			for (const artist of topArtists) {
+				const response = await axios.get(
+					`https://api.musixmatch.com/ws/1.1/artist.search?artist=${artist.name}&page_size=1`,
+					musixMatch(spotifyAccessToken)
+				);
+
+				response.data.message
+				
+				console.log(response);
+			}
+		} catch(e) {
+			console.log(e);
+		}
 
 		return res.json({
 			error: false,
-			data: response.data.items,
+			data: [],
 		});
 	}
 );
