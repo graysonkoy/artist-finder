@@ -34,6 +34,8 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 	let dev = req.app.get("env") === "development";
 	let errStatus = err.status || 500;
 
+	console.log(err);
+
 	res.status(errStatus).json({
 		error: true,
 		message: dev ? err.message : "An unknown error occurred",

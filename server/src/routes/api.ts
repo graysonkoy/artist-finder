@@ -1,6 +1,16 @@
 import express, { response, Router } from "express";
 import { query, validationResult } from "express-validator";
+import { MusicBrainzApi } from "musicbrainz-api";
 import axios from "axios";
+
+import genres from "../data/genres.json";
+import sample from "../data/sample.json";
+
+const mbApi = new MusicBrainzApi({
+	appName: "DSFDS",
+	appVersion: "2.5.0",
+	appContactInfo: "a4e5au",
+});
 
 const apiRouter = express.Router();
 
@@ -40,7 +50,7 @@ apiRouter.get(
 				},
 			});
 		} catch (e) {
-			console.log(e.response.data);
+			console.log(e.response);
 			throw e;
 		}
 	}
@@ -52,47 +62,211 @@ const spotifyHeaders = (accessToken: string) => ({
 	},
 });
 
+apiRouter.get("/get-location", async (req, res) => {
+	const ipRes: any = await axios.get("https://freegeoip.app/json/");
+
+	return res.json({
+		error: false,
+		data: ipRes.data,
+	});
+});
+
 apiRouter.get(
-	"/get-artists",
+	"/get-genre-list",
+
+	async (req, res) => {
+		return res.json({
+			error: false,
+			data: genres,
+		});
+	}
+);
+
+apiRouter.get(
+	"/get-artists-in-area",
+
+	query("area").isString(),
+	query("genres").optional().isArray(),
+	query("numArtists").default(50).isInt({ min: 1, max: 50 }),
+
+	async (req, res) => {
+		const errors = validationResult(req);
+		if (!errors.isEmpty())
+			return res.status(400).json({ errors: errors.array() });
+
+		const { area, genres, numArtists } = req.query;
+
+		let artists: any[] = [];
+
+		console.log(area);
+
+		const mbAreaRes = await mbApi.searchArea(area, 0, 1);
+		if (mbAreaRes.areas.length != 0) {
+			let query = "";
+
+			if (genres) {
+				query = `area:"${mbAreaRes.areas[0].name}" AND (${genres
+					.map((genre: any) => `genre:"${genre}"`)
+					.join(" OR ")})`;
+			} else {
+				query = `area:"${mbAreaRes.areas[0].name}"`;
+			}
+
+			const mbRes = await mbApi.searchArtist(query, 0, numArtists);
+
+			artists = mbRes.artists.map((artist) => ({
+				name: artist.name,
+				musicbrainz: {
+					id: artist.id,
+					gender: artist.gender,
+					country: artist.country,
+					area: artist.area,
+					birthArea: artist.begin_area,
+					life: artist["life-span"],
+					aliases: artist.aliases,
+				},
+			}));
+		}
+
+		return res.json({
+			error: false,
+			data: artists,
+		});
+	}
+);
+
+apiRouter.get(
+	"/get-top-artist-locations",
 
 	query("spotifyAccessToken").isString(),
 	query("topArtistTimeRange").default("long_term").isString(),
-	query("numTopArtists").default(3).isInt({ min: 1, max: 50 }),
+	query("numTopArtists").default(25).isInt({ min: 1, max: 50 }),
 
-	async (req, res, next) => {
+	async (req, res) => {
 		const errors = validationResult(req);
 		if (!errors.isEmpty())
 			return res.status(400).json({ errors: errors.array() });
 
 		const { spotifyAccessToken, topArtistTimeRange, numTopArtists } = req.query;
 
+		return res.json(sample);
+
 		// get top spotify artists
-		try {
-			const topArtists = (await axios.get(
+		console.log("Getting top Spotify artists...");
+
+		const spotifyRes = (
+			await axios.get(
 				`https://api.spotify.com/v1/me/top/artists?time_range=${topArtistTimeRange}&limit=${numTopArtists}`,
 				spotifyHeaders(spotifyAccessToken)
-			)).data.items;
+			)
+		).data.items;
 
-			console.log("top artists", topArtists);
-	
-			// get artist locations
-			for (const artist of topArtists) {
-				const response = await axios.get(
-					`https://api.musixmatch.com/ws/1.1/artist.search?artist=${artist.name}&page_size=1`,
-					musixMatch(spotifyAccessToken)
-				);
+		console.log(`Got ${spotifyRes.length} artists`);
 
-				response.data.message
-				
-				console.log(response);
-			}
-		} catch(e) {
-			console.log(e);
+		// get extra information about each artist
+		console.log("Getting extra information about each artist...");
+
+		let artistPromises: Promise<any>[] = [];
+		for (const spotifyData of spotifyRes) {
+			artistPromises.push(
+				new Promise(async (resolve, reject) => {
+					try {
+						// musicbrainz data
+						const mbRes = await mbApi.searchArtist(spotifyData.name, 0, 1);
+
+						if (mbRes.artists.length == 0) {
+							console.log(
+								`Couldn't get MusicBrainz data for artist '${spotifyData.name}'`
+							);
+							return reject();
+						}
+
+						const mbData = mbRes.artists[0];
+
+						resolve({
+							name: spotifyData.name,
+							spotify: {
+								popularity: spotifyData.popularity,
+								genres: spotifyData.genres,
+								spotifyFollowers: spotifyData.followers.total,
+								images: spotifyData.images,
+								urls: spotifyData.external_urls,
+							},
+							musicbrainz: {
+								id: mbData.id,
+								gender: mbData.gender,
+								country: mbData.country,
+								area: mbData.area,
+								birthArea: mbData.begin_area,
+								life: mbData["life-span"],
+								aliases: mbData.aliases,
+							},
+						});
+					} catch (e) {
+						console.log(e);
+						reject(e);
+					}
+				})
+			);
 		}
+
+		const artists = await Promise.all(artistPromises);
+
+		console.log(`Done`);
+
+		// get openstreetmap data for each area
+		let locationPromises: Promise<any>[] = [];
+
+		const areas = [
+			...new Set(artists.map((artist) => artist.musicbrainz.area.name)),
+		];
+
+		console.log(`Getting location data for ${areas.length} artist's areas...`);
+
+		for (const area of areas) {
+			locationPromises.push(
+				new Promise(async (resolve, reject) => {
+					try {
+						// openstreetmap data
+						const osmRes = await axios.get(
+							`https://nominatim.openstreetmap.org/search?q=${area}&limit=1&format=json`
+						);
+
+						if (osmRes.data.length == 0) {
+							console.log(`Couldn't get OpenStreetMap data for area '${area}'`);
+							return reject();
+						}
+
+						const osmData = osmRes.data[0];
+						resolve({ area: area, data: osmData });
+					} catch (e) {
+						console.log(e);
+						reject(e);
+					}
+				})
+			);
+		}
+
+		const locations = await Promise.all(locationPromises);
+
+		// add location data to artists
+		for (const location of locations) {
+			for (let artist of artists) {
+				if (artist.musicbrainz.area.name == location.area) {
+					artist.openstreetmap = {
+						latitude: location.data.lat,
+						longitude: location.data.lon,
+						geojson: location.data.geojson,
+					};
+				}
+			}
+		}
+
+		console.log(`Done`);
 
 		return res.json({
 			error: false,
-			data: [],
+			data: artists,
 		});
 	}
 );
