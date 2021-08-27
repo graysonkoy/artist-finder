@@ -1,5 +1,5 @@
 import { Button } from "@material-ui/core";
-import { ReactElement, useContext, useEffect } from "react";
+import { ReactElement, useContext, useEffect, useState } from "react";
 import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
 
@@ -14,6 +14,8 @@ export const AuthLogin = (): ReactElement => {
 };
 
 export const AuthRedirect = (): ReactElement => {
+	const [loggingIn, setLoggingIn] = useState(true);
+
 	const auth = useContext(AuthContext);
 	const history = useHistory();
 
@@ -21,24 +23,32 @@ export const AuthRedirect = (): ReactElement => {
 	const code = params.get("code");
 
 	useEffect(() => {
-		auth.spotifyLogin(code);
-		history.push("/");
+		setLoggingIn(true);
+
+		if (code) {
+			auth.spotifyLogin(code).then(() => history.push("/"));
+		}
+
+		setLoggingIn(false);
 	}, [code]);
 
-	if (!code) {
-		return (
-			<div>
+	return (
+		<div className="auth">
+			{loggingIn ? (
+				<h2>Logging in to Spotify...</h2>
+			) : !code ? (
 				<h2>Failed to authenticate Spotify</h2>
-				<Link to="/">
-					<Button variant="contained" color="primary">
-						Go back
-					</Button>
-				</Link>
-			</div>
-		);
-	}
+			) : (
+				<h2>Logged in, redirecting...</h2>
+			)}
 
-	return <div className="auth">Redir</div>;
+			<Link to="/">
+				<Button variant="contained" color="primary">
+					Go back
+				</Button>
+			</Link>
+		</div>
+	);
 };
 
 export const AuthLogout = (): ReactElement => {

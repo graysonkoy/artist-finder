@@ -62,6 +62,8 @@ export const AuthStore: FunctionComponent = ({ children }) => {
 				authCode,
 				accessToken,
 			} as SpotifyTokenInterface);
+
+			console.log("Set tokens", authCode, accessToken);
 		} catch (e) {
 			console.log(e);
 		}
@@ -69,6 +71,8 @@ export const AuthStore: FunctionComponent = ({ children }) => {
 
 	const spotifyLogout = (): void => {
 		setSpotifyTokens(null);
+
+		console.log("Unset tokens", null);
 	};
 
 	const spotifyIsLoggedIn = (): boolean => {

@@ -60,6 +60,8 @@ const ArtistFinder = (): ReactElement => {
 		setLoading(true);
 		setError(null);
 
+		console.log("Getting top artists");
+
 		Promise.all([
 			auth.spotifyIsLoggedIn()
 				? auth.apiGet("/api/get-top-artist-locations")

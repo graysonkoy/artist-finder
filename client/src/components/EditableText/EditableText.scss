@@ -1,0 +1,23 @@
+.editable-text-form {
+	display: inline;
+
+	.editable-text {
+		background: none;
+		border: none;
+
+		color: inherit;
+		font-weight: inherit;
+
+		max-width: 30rem;
+
+		border-bottom: 1px solid var(--text-color-low-opacity);
+
+		transition: border-bottom 0.1s;
+
+		&:focus {
+			border-bottom: 1px solid var(--text-colour);
+
+			outline: none;
+		}
+	}
+}

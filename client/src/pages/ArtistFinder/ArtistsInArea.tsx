@@ -9,7 +9,9 @@ import {
 } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 
+import EditableText from "../../components/EditableText/EditableText";
 import Loader from "../../components/Loader/Loader";
+
 import AuthContext from "../../context/AuthContext";
 
 import { MusicBrainzData } from "./ArtistFinder";
@@ -40,6 +42,7 @@ const ArtistsInArea = ({ area, genres }: ArtistsInAreaProps) => {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 	const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+	const [manualArea, setManualArea] = useState<string | null>(null);
 
 	const classes = useStyles();
 
@@ -52,7 +55,7 @@ const ArtistsInArea = ({ area, genres }: ArtistsInAreaProps) => {
 
 		auth
 			.apiGet("/api/get-artists-in-area", {
-				area,
+				area: manualArea ? manualArea : area,
 				genres: selectedGenres,
 			})
 			.then((data) => {
@@ -63,12 +66,25 @@ const ArtistsInArea = ({ area, genres }: ArtistsInAreaProps) => {
 	};
 
 	useEffect(() => {
+		// new area, get new artists
+		setManualArea(null);
 		get();
 	}, [area]);
 
+	useEffect(() => {
+		// manual area now, get new artists
+		if (manualArea) get();
+	}, [manualArea]);
+
 	return (
 		<div className="find-other-artists">
-			<h1>Artists in {area}</h1>
+			<h1>
+				Artists in{" "}
+				<EditableText
+					text={area}
+					onChange={(newArea) => setManualArea(newArea)}
+				/>
+			</h1>
 
 			<div className="search" style={{ gap: "1rem", alignItems: "stretch" }}>
 				<Autocomplete

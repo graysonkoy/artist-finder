@@ -2,11 +2,12 @@ import { ReactElement, useState, useContext, useEffect } from "react";
 import AuthContext from "../../context/AuthContext";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
+import { TopArtist } from "./ArtistFinder";
+
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
 import "./ArtistMap.scss";
-import { TopArtist } from "./ArtistFinder";
 
 const icon = L.icon({
 	iconUrl: "/leaflet/marker-icon.png",
