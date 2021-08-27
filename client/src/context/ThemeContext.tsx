@@ -36,10 +36,10 @@ export const ThemeStore: FunctionComponent = ({ children }) => {
 		palette: {
 			type: darkTheme ? "dark" : "light",
 			primary: {
-				main: "#AF3E4D",
+				main: "#242423",
 			},
 			secondary: {
-				main: "#A97C73",
+				main: "#E8EDDF",
 			},
 		},
 	});

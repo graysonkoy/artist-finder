@@ -9,22 +9,25 @@ import L from "leaflet";
 
 import "./ArtistMap.scss";
 
+const iconSize = [25, 35];
+const smallerIconMult = 0.8;
+
 const icon = L.icon({
-	iconUrl: "/leaflet/marker-icon.png",
-	iconAnchor: [10, 33],
-	iconSize: [20, 33],
+	iconUrl: "/leaflet/marker.svg",
+	iconAnchor: [iconSize[0] / 2, iconSize[1]],
+	iconSize: [iconSize[0] * smallerIconMult, iconSize[1] * smallerIconMult],
 });
 
 const iconYours = L.icon({
-	iconUrl: "/leaflet/marker-icon-you.png",
-	iconAnchor: [13, 41],
-	iconSize: [25, 41],
+	iconUrl: "/leaflet/you-marker.svg",
+	iconAnchor: [iconSize[0] / 2, iconSize[1]],
+	iconSize: [iconSize[0] * smallerIconMult, iconSize[1] * smallerIconMult],
 });
 
 const iconDraggable = L.icon({
-	iconUrl: "/leaflet/marker-icon-draggable.png",
-	iconAnchor: [10, 33],
-	iconSize: [20, 33],
+	iconUrl: "/leaflet/draggable-marker.svg",
+	iconAnchor: [iconSize[0] / 2, iconSize[1]],
+	iconSize: [iconSize[0], iconSize[1]],
 });
 
 interface DraggableMarkerProps {
@@ -192,8 +195,12 @@ const ArtistMap = ({
 				// maxBounds={bounds}
 			>
 				<TileLayer
-					attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+					// attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+					// url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+					attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+					url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}.png"
+					// attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+					// url="https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png"
 				/>
 
 				<DraggableMarker

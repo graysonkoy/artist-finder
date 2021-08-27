@@ -72,6 +72,10 @@ const ArtistsInArea = ({ area, genres }: ArtistsInAreaProps) => {
 	}, [area]);
 
 	useEffect(() => {
+		get();
+	}, [selectedGenres]);
+
+	useEffect(() => {
 		// manual area now, get new artists
 		if (manualArea) get();
 	}, [manualArea]);
@@ -86,7 +90,13 @@ const ArtistsInArea = ({ area, genres }: ArtistsInAreaProps) => {
 				/>
 			</h1>
 
-			<div className="search" style={{ gap: "1rem", alignItems: "stretch" }}>
+			<form
+				className="search"
+				onSubmit={(e) => {
+					get();
+					e.preventDefault();
+				}}
+			>
 				<Autocomplete
 					multiple
 					options={genres}
@@ -103,10 +113,10 @@ const ArtistsInArea = ({ area, genres }: ArtistsInAreaProps) => {
 					style={{ flexGrow: 1 }}
 				/>
 
-				<Button variant="contained" color="primary" onClick={() => get()}>
+				{/* <Button variant="contained" color="primary" onClick={() => get()}>
 					Search
-				</Button>
-			</div>
+				</Button> */}
+			</form>
 
 			{searched && (
 				<>

@@ -111,21 +111,15 @@ const ArtistFinder = (): ReactElement => {
 
 				<div className="marker-explanations">
 					<div className="marker-explanation">
-						<img src="/leaflet/marker-icon.png" alt="Regular marker" />
+						<img src="/leaflet/marker.svg" alt="Regular marker" />
 						<span>Spotify top artist</span>
 					</div>
 					<div className="marker-explanation">
-						<img
-							src="/leaflet/marker-icon-you.png"
-							alt="Your location's marker"
-						/>
+						<img src="/leaflet/you-marker.svg" alt="Your location's marker" />
 						<span>Your location</span>
 					</div>
 					<div className="marker-explanation">
-						<img
-							src="/leaflet/marker-icon-draggable.png"
-							alt="Draggable marker"
-						/>
+						<img src="/leaflet/draggable-marker.svg" alt="Draggable marker" />
 						<span>Custom location (draggable)</span>
 					</div>
 				</div>
