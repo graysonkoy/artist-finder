@@ -10,7 +10,7 @@ import { TopArtist } from "./ArtistFinder";
 
 const icon = L.icon({
 	iconUrl: "/leaflet/marker-icon.png",
-	iconAnchor: [13, 41],
+	iconAnchor: [10, 33],
 	iconSize: [20, 33],
 });
 
@@ -22,7 +22,7 @@ const iconYours = L.icon({
 
 const iconDraggable = L.icon({
 	iconUrl: "/leaflet/marker-icon-draggable.png",
-	iconAnchor: [13, 41],
+	iconAnchor: [10, 33],
 	iconSize: [20, 33],
 });
 
@@ -54,6 +54,8 @@ const DraggableMarker = ({
 				if (res.address.city) area = res.address.city;
 				else if (res.address.state) area = res.address.state;
 				else if (res.address.country) area = res.address.country;
+
+				console.log(area, position);
 
 				if (area) onSelect(area);
 			});
@@ -194,7 +196,7 @@ const ArtistMap = ({
 				/>
 
 				<DraggableMarker
-					startPos={[-30.145127183376115, 126.56250000000001]}
+					startPos={[-33.90689555128868, 151.23229980468753]}
 					onSelect={onSelect}
 					onDeselect={onDeselect}
 				/>

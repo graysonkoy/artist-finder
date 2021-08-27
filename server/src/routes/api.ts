@@ -129,8 +129,6 @@ apiRouter.get(
 
 		let artists: any[] = [];
 
-		console.log(area);
-
 		const mbAreaRes = await mbApi.searchArea(area, 0, 1);
 		if (mbAreaRes.areas.length != 0) {
 			let query = "";

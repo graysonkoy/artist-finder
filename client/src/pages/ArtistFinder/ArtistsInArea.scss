@@ -1,6 +1,5 @@
 .find-other-artists {
 	width: 100%;
-	max-width: 40rem;
 	margin: 0 auto;
 
 	.search {
@@ -41,6 +40,33 @@
 
 			&:active {
 				transform: scale(0.99, 0.99);
+			}
+
+			.aliases {
+				margin-bottom: 0.5rem;
+			}
+
+			.artist-info {
+				.info-name {
+					display: inline;
+					opacity: 0.75;
+
+					&:after {
+						content: ": ";
+					}
+				}
+
+				.info-value {
+					display: inline;
+				}
+
+				.info-none {
+					opacity: 0.6;
+				}
+
+				&:not(:last-child) {
+					margin-bottom: 0.25rem;
+				}
 			}
 
 			.alias {

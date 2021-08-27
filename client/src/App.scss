@@ -6,13 +6,17 @@
 
 	min-height: 100vh;
 
-	text-align: center;
+	text-align: left;
 
 	transition: color 0.1s, background-color 0.2s;
 }
 
 main {
 	padding: 3rem 5rem;
+
+	max-width: 80rem;
+
+	margin: 0 auto;
 }
 
 * {

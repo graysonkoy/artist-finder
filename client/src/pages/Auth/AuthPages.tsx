@@ -2,6 +2,7 @@ import { Button } from "@material-ui/core";
 import { ReactElement, useContext, useEffect } from "react";
 import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
+
 import "./AuthPages.scss";
 
 export const AuthLogin = (): ReactElement => {

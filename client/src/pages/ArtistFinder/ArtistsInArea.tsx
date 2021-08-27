@@ -4,8 +4,8 @@ import {
 	CircularProgress,
 	Card,
 	CardContent,
-	CardActions,
 	Link,
+	makeStyles,
 } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { useState, useContext, useEffect, ReactElement } from "react";
@@ -24,12 +24,22 @@ export interface ArtistInArea {
 	musicbrainz: MusicBrainzData;
 }
 
+const useStyles = makeStyles((theme) => ({
+	fixedCardContent: {
+		"&:last-child": {
+			paddingBottom: "16px", // -_-
+		},
+	},
+}));
+
 const ArtistsInArea = ({ area, genres }: ArtistsInAreaProps) => {
 	const [artistsInArea, setArtistsInArea] = useState<ArtistInArea[]>();
 	const [searched, setSearched] = useState(false);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 	const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+
+	const classes = useStyles();
 
 	const auth = useContext(AuthContext);
 
@@ -56,7 +66,7 @@ const ArtistsInArea = ({ area, genres }: ArtistsInAreaProps) => {
 
 	return (
 		<div className="find-other-artists">
-			<h1>Find artists in {area}</h1>
+			<h1>Artists in {area}</h1>
 
 			<div className="search" style={{ gap: "1rem", alignItems: "stretch" }}>
 				<Autocomplete
@@ -95,20 +105,80 @@ const ArtistsInArea = ({ area, genres }: ArtistsInAreaProps) => {
 						<h2>No artists found</h2>
 					) : (
 						<div className="artists-in-area">
-							{artistsInArea.map(
-								(artist): ReactElement => (
+							{artistsInArea.map((artist): ReactElement => {
+								const artistInfo = () => {
+									let elems: ReactElement[] = [];
+
+									if (artist.musicbrainz.gender) {
+										elems.push(
+											<div className="artist-info">
+												<div className="info-name">Gender</div>
+												<div className="info-value">
+													{artist.musicbrainz.gender}
+												</div>
+											</div>
+										);
+									}
+
+									if (artist.musicbrainz.life) {
+										if (artist.musicbrainz.life.begin) {
+											elems.push(
+												<div className="artist-info">
+													<div className="info-name">Born</div>
+													<div className="info-value">
+														{artist.musicbrainz.life.begin}
+													</div>
+												</div>
+											);
+										}
+
+										if (artist.musicbrainz.life.end) {
+											elems.push(
+												<div className="artist-info">
+													<div className="info-name">Died</div>
+													<div className="info-value">
+														{artist.musicbrainz.life.end}
+													</div>
+												</div>
+											);
+										}
+									}
+
+									if (artist.musicbrainz.birthArea) {
+										elems.push(
+											<div className="artist-info">
+												<div className="info-name">Born</div>
+												<div className="info-value">
+													{artist.musicbrainz.birthArea.name}
+												</div>
+											</div>
+										);
+									}
+
+									if (elems.length == 0) {
+										elems.push(
+											<div className="artist-info">
+												<div className="info-none">No information found</div>
+											</div>
+										);
+									}
+
+									return elems;
+								};
+
+								return (
 									<Link
 										className="artist"
 										href={`https://open.spotify.com/search/${artist.name}`}
 										style={{ textDecoration: "none", color: "inherit" }}
 									>
 										<Card variant="outlined" key={artist.musicbrainz.id}>
-											<CardContent>
+											<CardContent className={classes.fixedCardContent}>
 												<h3>{artist.name}</h3>
 
 												{artist.musicbrainz.aliases &&
 													artist.musicbrainz.aliases.length != 0 && (
-														<div>
+														<div className="aliases">
 															Also known as{" "}
 															{artist.musicbrainz.aliases.map(
 																(alias: any, i: number): ReactElement => (
@@ -120,29 +190,12 @@ const ArtistsInArea = ({ area, genres }: ArtistsInAreaProps) => {
 														</div>
 													)}
 
-												{artist.musicbrainz.gender && (
-													<div>Gender: {artist.musicbrainz.gender}</div>
-												)}
-
-												{artist.musicbrainz.life && (
-													<>
-														{artist.musicbrainz.life.begin && (
-															<div>Born {artist.musicbrainz.life.begin}</div>
-														)}
-														{artist.musicbrainz.life.end && (
-															<div>Died {artist.musicbrainz.life.end}</div>
-														)}
-													</>
-												)}
-
-												{artist.musicbrainz.birthArea && (
-													<div>Born in {artist.musicbrainz.birthArea.name}</div>
-												)}
+												{artistInfo()}
 											</CardContent>
 										</Card>
 									</Link>
-								)
-							)}
+								);
+							})}
 						</div>
 					)}
 				</>
