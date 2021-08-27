@@ -62,7 +62,38 @@ const spotifyHeaders = (accessToken: string) => ({
 	},
 });
 
-apiRouter.get("/get-location", async (req, res) => {
+apiRouter.get(
+	"/get-location",
+
+	query("latitude").isNumeric(),
+	query("longitude").isNumeric(),
+
+	async (req, res) => {
+		const errors = validationResult(req);
+		if (!errors.isEmpty())
+			return res.status(400).json({ errors: errors.array() });
+
+		const { latitude, longitude } = req.query;
+
+		const locRes = await axios.get(
+			`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
+		);
+
+		if (locRes.data.error) {
+			return res.status(500).json({
+				error: true,
+				message: locRes.data.error,
+			});
+		}
+
+		return res.json({
+			error: false,
+			data: locRes.data,
+		});
+	}
+);
+
+apiRouter.get("/get-my-location", async (req, res) => {
 	const ipRes: any = await axios.get("https://freegeoip.app/json/");
 
 	return res.json({
@@ -113,6 +144,11 @@ apiRouter.get(
 			}
 
 			const mbRes = await mbApi.searchArtist(query, 0, numArtists);
+
+			// // sort artists by the amount of data there is on them
+			// mbRes.artists = mbRes.artists.sort(
+			// 	(a, b) => Object.keys(b).length - Object.keys(a).length
+			// );
 
 			artists = mbRes.artists.map((artist) => ({
 				name: artist.name,
@@ -167,7 +203,7 @@ apiRouter.get(
 		console.log("Getting extra information about each artist...");
 
 		let artistPromises: Promise<any>[] = [];
-		for (const spotifyData of spotifyRes) {
+		for (const [rankIndex, spotifyData] of spotifyRes.entries()) {
 			artistPromises.push(
 				new Promise(async (resolve, reject) => {
 					try {
@@ -185,6 +221,7 @@ apiRouter.get(
 
 						resolve({
 							name: spotifyData.name,
+							ranking: rankIndex + 1,
 							spotify: {
 								popularity: spotifyData.popularity,
 								genres: spotifyData.genres,
@@ -232,10 +269,12 @@ apiRouter.get(
 							`https://nominatim.openstreetmap.org/search?q=${area}&limit=1&format=json`
 						);
 
-						if (osmRes.data.length == 0) {
-							console.log(`Couldn't get OpenStreetMap data for area '${area}'`);
-							return reject();
-						}
+						if (osmRes.data.error) return reject(osmRes.data.error);
+
+						if (osmRes.data.length == 0)
+							return reject(
+								`Couldn't get OpenStreetMap data for area '${area}'`
+							);
 
 						const osmData = osmRes.data[0];
 						resolve({ area: area, data: osmData });

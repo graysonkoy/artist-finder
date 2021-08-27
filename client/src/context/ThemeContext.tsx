@@ -21,7 +21,9 @@ export const ThemeStore: FunctionComponent = ({ children }) => {
 	});
 
 	useEffect(() => {
-		document.body.dataset.theme = `theme-${darkTheme ? "dark" : "light"}`;
+		document.documentElement.dataset.theme = `theme-${
+			darkTheme ? "dark" : "light"
+		}`;
 	}, [darkTheme]);
 
 	const toggleDarkTheme = (): void => {

@@ -1,0 +1,56 @@
+.find-other-artists {
+	width: 100%;
+	max-width: 40rem;
+	margin: 0 auto;
+
+	.search {
+		display: flex;
+		flex-direction: row;
+
+		#genre-select {
+			flex-grow: 1;
+		}
+	}
+
+	.artists-in-area {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.5rem;
+
+		.artist {
+			h1,
+			h2,
+			h3,
+			h4,
+			h5 {
+				margin-bottom: 0.5rem;
+			}
+
+			width: 100%;
+
+			text-align: left;
+
+			cursor: pointer;
+
+			transition: transform 0.1s;
+
+			&:hover {
+				transform: scale(0.995, 0.995);
+			}
+
+			&:active {
+				transform: scale(0.99, 0.99);
+			}
+
+			.alias {
+				font-weight: bold;
+
+				&:not(:last-child):after {
+					// :D
+					content: ", ";
+				}
+			}
+		}
+	}
+}

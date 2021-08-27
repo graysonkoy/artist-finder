@@ -76,11 +76,9 @@ export const AuthStore: FunctionComponent = ({ children }) => {
 	};
 
 	const apiGet = async (url: string, params: any = {}): Promise<any> => {
-		if (!spotifyTokens?.accessToken) return false;
-
 		return await Api.get(url, {
 			...params,
-			spotifyAccessToken: spotifyTokens.accessToken,
+			spotifyAccessToken: spotifyTokens ? spotifyTokens.accessToken : null,
 		});
 	};
 

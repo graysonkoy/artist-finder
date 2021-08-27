@@ -3,6 +3,7 @@
 	"data": [
 		{
 			"name": "Bladee",
+			"ranking": 1,
 			"spotify": {
 				"popularity": 69,
 				"genres": ["emo rap", "glitchcore", "underground hip hop"],
@@ -58,6 +59,7 @@
 		},
 		{
 			"name": "Playboi Carti",
+			"ranking": 2,
 			"spotify": {
 				"popularity": 86,
 				"genres": ["atl hip hop", "plugg", "rap", "trap"],
@@ -132,6 +134,7 @@
 		},
 		{
 			"name": "Dean Blunt",
+			"ranking": 3,
 			"spotify": {
 				"popularity": 54,
 				"genres": [
@@ -183,6 +186,7 @@
 		},
 		{
 			"name": "BROCKHAMPTON",
+			"ranking": 4,
 			"spotify": {
 				"popularity": 77,
 				"genres": ["boy band", "hip hop", "rap"],
@@ -225,6 +229,7 @@
 		},
 		{
 			"name": "Tyler, The Creator",
+			"ranking": 5,
 			"spotify": {
 				"popularity": 89,
 				"genres": ["hip hop", "rap"],
@@ -307,6 +312,7 @@
 		},
 		{
 			"name": "JPEGMAFIA",
+			"ranking": 6,
 			"spotify": {
 				"popularity": 65,
 				"genres": [
@@ -358,6 +364,7 @@
 		},
 		{
 			"name": "Vince Staples",
+			"ranking": 7,
 			"spotify": {
 				"popularity": 76,
 				"genres": [
@@ -419,6 +426,7 @@
 		},
 		{
 			"name": "Grimes",
+			"ranking": 8,
 			"spotify": {
 				"popularity": 72,
 				"genres": [
@@ -486,6 +494,7 @@
 		},
 		{
 			"name": "Tame Impala",
+			"ranking": 9,
 			"spotify": {
 				"popularity": 82,
 				"genres": ["australian psych", "neo-psychedelic"],
@@ -528,6 +537,7 @@
 		},
 		{
 			"name": "Kanye West",
+			"ranking": 10,
 			"spotify": {
 				"popularity": 94,
 				"genres": ["chicago rap", "rap"],
@@ -632,6 +642,7 @@
 		},
 		{
 			"name": "Mac DeMarco",
+			"ranking": 11,
 			"spotify": {
 				"popularity": 78,
 				"genres": ["edmonton indie", "lo-fi indie"],
@@ -727,6 +738,7 @@
 		},
 		{
 			"name": "Inner Wave",
+			"ranking": 12,
 			"spotify": {
 				"popularity": 59,
 				"genres": ["indie garage rock", "indie pop", "neo-psychedelic"],
@@ -768,6 +780,7 @@
 		},
 		{
 			"name": "shamana",
+			"ranking": 13,
 			"spotify": {
 				"popularity": 45,
 				"genres": ["phonk"],
@@ -810,6 +823,7 @@
 		},
 		{
 			"name": "Death Grips",
+			"ranking": 14,
 			"spotify": {
 				"popularity": 63,
 				"genres": [
@@ -873,6 +887,7 @@
 		},
 		{
 			"name": "Charli XCX",
+			"ranking": 15,
 			"spotify": {
 				"popularity": 79,
 				"genres": [
@@ -948,6 +963,7 @@
 		},
 		{
 			"name": "Lorde",
+			"ranking": 16,
 			"spotify": {
 				"popularity": 86,
 				"genres": [
@@ -1020,6 +1036,7 @@
 		},
 		{
 			"name": "Frankie Cosmos",
+			"ranking": 17,
 			"spotify": {
 				"popularity": 54,
 				"genres": [
@@ -1069,6 +1086,7 @@
 		},
 		{
 			"name": "Cartier God",
+			"ranking": 18,
 			"spotify": {
 				"popularity": 45,
 				"genres": ["glitchcore", "plugg", "underground hip hop"],
@@ -1122,6 +1140,7 @@
 		},
 		{
 			"name": "Alvvays",
+			"ranking": 19,
 			"spotify": {
 				"popularity": 61,
 				"genres": [
@@ -1170,6 +1189,7 @@
 		},
 		{
 			"name": "Ecco2k",
+			"ranking": 20,
 			"spotify": {
 				"popularity": 61,
 				"genres": [
@@ -1230,6 +1250,7 @@
 		},
 		{
 			"name": "The Strokes",
+			"ranking": 21,
 			"spotify": {
 				"popularity": 80,
 				"genres": [
@@ -1289,6 +1310,7 @@
 		},
 		{
 			"name": "Injury Reserve",
+			"ranking": 22,
 			"spotify": {
 				"popularity": 56,
 				"genres": [
@@ -1337,6 +1359,7 @@
 		},
 		{
 			"name": "Jay Som",
+			"ranking": 23,
 			"spotify": {
 				"popularity": 53,
 				"genres": [
@@ -1388,6 +1411,7 @@
 		},
 		{
 			"name": "Gregory and the Hawk",
+			"ranking": 24,
 			"spotify": {
 				"popularity": 46,
 				"genres": ["folk-pop"],
@@ -1457,6 +1481,7 @@
 		},
 		{
 			"name": "Kero Kero Bonito",
+			"ranking": 25,
 			"spotify": {
 				"popularity": 62,
 				"genres": ["escape room", "hyperpop", "japanese electropop"],

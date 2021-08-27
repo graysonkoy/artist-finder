@@ -1,8 +1,17 @@
-:root {
+:root[data-theme="theme-light"] {
+	--background-colour: #fff;
+	--text-colour: #000;
+
+	--card-background: #fff;
+	--card-border: #000;
+	--card-text-colour: #000;
+}
+
+:root[data-theme="theme-dark"] {
 	--background-colour: #000;
 	--text-colour: #fff;
 
-	--card-background: rgba(255, 255, 255, 0.986);
-	--card-border: rgba(0, 0, 0, 0.096);
+	--card-background: #fff;
+	--card-border: #000;
 	--card-text-colour: #000;
 }

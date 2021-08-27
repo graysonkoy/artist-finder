@@ -1,0 +1,22 @@
+.header {
+	font-weight: bold;
+	font-size: 1.3rem;
+}
+
+.loader {
+	margin-bottom: 1rem;
+}
+
+.sign-in-prompt {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+
+	margin-bottom: 1rem;
+
+	h3 {
+		margin-bottom: 0;
+	}
+}
