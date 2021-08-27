@@ -1,15 +1,17 @@
+import { useState, useContext, useEffect, ReactElement } from "react";
 import {
 	TextField,
 	Button,
-	CircularProgress,
 	Card,
 	CardContent,
 	Link,
 	makeStyles,
 } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
-import { useState, useContext, useEffect, ReactElement } from "react";
+
+import Loader from "../../components/Loader/Loader";
 import AuthContext from "../../context/AuthContext";
+
 import { MusicBrainzData } from "./ArtistFinder";
 
 import "./ArtistsInArea.scss";
@@ -90,13 +92,10 @@ const ArtistsInArea = ({ area, genres }: ArtistsInAreaProps) => {
 				</Button>
 			</div>
 
-			<br />
-			<br />
-
 			{searched && (
 				<>
 					{loading ? (
-						<CircularProgress className="loader" />
+						<Loader />
 					) : error ? (
 						<h2>Error: {error}</h2>
 					) : !artistsInArea ? (

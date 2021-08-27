@@ -1,27 +1,14 @@
-import {
-	ReactElement,
-	useContext,
-	useEffect,
-	useMemo,
-	useRef,
-	useState,
-} from "react";
-import {
-	Button,
-	Card,
-	CardActions,
-	CardContent,
-	CircularProgress,
-	TextField,
-} from "@material-ui/core";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import AuthContext from "../../context/AuthContext";
+import { ReactElement, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Button, CircularProgress } from "@material-ui/core";
 
-import "./ArtistFinder.scss";
+import Loader from "../../components/Loader/Loader";
+import AuthContext from "../../context/AuthContext";
 
 import ArtistsInArea from "./ArtistsInArea";
 import ArtistMap from "./ArtistMap";
+
+import "./ArtistFinder.scss";
 
 export interface ArtistInterface {
 	uri: string;
@@ -92,7 +79,7 @@ const ArtistFinder = (): ReactElement => {
 			<h1>Artist Finder</h1>
 
 			{loading ? (
-				<CircularProgress className="loader" />
+				<Loader />
 			) : error ? (
 				<h2>Error: {error}</h2>
 			) : !artists ? (
