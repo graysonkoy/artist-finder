@@ -1,4 +1,4 @@
-import { ReactElement, useState, useContext, useEffect } from "react";
+import React, { ReactElement, useState, useContext, useEffect } from "react";
 import AuthContext from "../../context/AuthContext";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
@@ -10,23 +10,27 @@ import L from "leaflet";
 import "./ArtistMap.scss";
 
 const iconSize = [25, 35];
-const smallerIconMult = 0.8;
+const smallIconSize = [iconSize[0] * 0.8, iconSize[1] * 0.8];
+const popupPadding = 5;
 
 const icon = L.icon({
 	iconUrl: "/leaflet/marker.svg",
-	iconAnchor: [iconSize[0] / 2, iconSize[1]],
-	iconSize: [iconSize[0] * smallerIconMult, iconSize[1] * smallerIconMult],
+	iconAnchor: [smallIconSize[0] / 2, smallIconSize[1]],
+	popupAnchor: [0, -(smallIconSize[1] + popupPadding)],
+	iconSize: [smallIconSize[0], smallIconSize[1]],
 });
 
 const iconYours = L.icon({
 	iconUrl: "/leaflet/you-marker.svg",
-	iconAnchor: [iconSize[0] / 2, iconSize[1]],
-	iconSize: [iconSize[0] * smallerIconMult, iconSize[1] * smallerIconMult],
+	iconAnchor: [smallIconSize[0] / 2, smallIconSize[1]],
+	popupAnchor: [0, -(smallIconSize[1] + popupPadding)],
+	iconSize: [smallIconSize[0], smallIconSize[1]],
 });
 
 const iconDraggable = L.icon({
 	iconUrl: "/leaflet/draggable-marker.svg",
 	iconAnchor: [iconSize[0] / 2, iconSize[1]],
+	popupAnchor: [0, -(iconSize[1] + popupPadding)],
 	iconSize: [iconSize[0], iconSize[1]],
 });
 
@@ -146,7 +150,7 @@ const ArtistMap = ({
 	];
 
 	const artistsPopup = (area: string, artists: TopArtist[]) => {
-		let elems: ReactElement[] = [];
+		const elems: ReactElement[] = [];
 
 		elems.push(<h2 key="title">Artists in {area}</h2>);
 
@@ -170,7 +174,7 @@ const ArtistMap = ({
 	};
 
 	// group up artists
-	let artistsInAreas: any = {};
+	const artistsInAreas: any = {};
 	if (artists) {
 		for (const artist of artists) {
 			const area: string = artist.musicbrainz.area.name;

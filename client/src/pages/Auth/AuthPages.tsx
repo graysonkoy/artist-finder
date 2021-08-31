@@ -1,6 +1,6 @@
-import { Button } from "@material-ui/core";
-import { ReactElement, useContext, useEffect, useState } from "react";
+import React, { ReactElement, useContext, useEffect, useState } from "react";
 import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
+import { Button } from "@material-ui/core";
 import AuthContext from "../../context/AuthContext";
 
 import "./AuthPages.scss";

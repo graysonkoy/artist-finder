@@ -1,5 +1,11 @@
-import { createContext, FunctionComponent, useEffect, useState } from "react";
-import Api from "../utils/server";
+import React, {
+	createContext,
+	FunctionComponent,
+	useEffect,
+	useState,
+	useContext,
+} from "react";
+import ApiContext from "./ApiContext";
 
 export interface AuthContextInterface {
 	spotifyGetAuthUrl: () => string;
@@ -23,6 +29,8 @@ export const AuthStore: FunctionComponent = ({ children }) => {
 	const clientId = "81b902560526439c99e3ee902c0acb5e";
 
 	const scopes = ["user-top-read"];
+
+	const Api = useContext(ApiContext);
 
 	const [spotifyTokens, setSpotifyTokens] =
 		useState<SpotifyTokenInterface | null>(() => {

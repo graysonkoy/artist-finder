@@ -1,4 +1,4 @@
-import { ReactElement, useContext, useEffect, useState } from "react";
+import React, { ReactElement, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, CircularProgress } from "@material-ui/core";
 
@@ -49,58 +49,59 @@ export interface TopArtist {
 
 const ArtistFinder = (): ReactElement => {
 	const [artists, setArtists] = useState<TopArtist[]>();
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState<string | null>(null);
+	const [loadingArtists, setLoadingArtists] = useState(true);
 	const [selectedArea, setSelectedArea] = useState<string | null>(null);
 	const [genres, setGenres] = useState<string[]>([]);
 
 	const auth = useContext(AuthContext);
 
 	useEffect(() => {
-		setLoading(true);
-		setError(null);
+		auth.apiGet("/api/get-genre-list").then((genresData) => {
+			setGenres(genresData);
+		});
 
-		console.log("Getting top artists");
+		if (auth.spotifyIsLoggedIn()) {
+			setLoadingArtists(true);
 
-		Promise.all([
-			auth.spotifyIsLoggedIn()
-				? auth.apiGet("/api/get-top-artist-locations")
-				: null,
-			auth.apiGet("/api/get-genre-list"),
-		])
-			.then(([artistsData, genresData]) => {
-				setArtists(artistsData);
-				setGenres(genresData);
-			})
-			.catch((e) => setError(e.message))
-			.finally(() => setLoading(false));
+			console.log("Getting top artists");
+
+			auth
+				.apiGet("/api/get-top-artist-locations")
+				.then((artistsData) => {
+					setArtists(artistsData);
+				})
+				.finally(() => setLoadingArtists(false));
+		}
 	}, []);
 
 	return (
 		<div>
 			<h1>Artist Finder</h1>
 
-			{loading ? (
-				<Loader />
-			) : error ? (
-				<h2>Error: {error}</h2>
-			) : !artists ? (
-				<>
-					{!auth.spotifyIsLoggedIn() ? (
-						<div className="sign-in-prompt">
-							<h3>Log in with Spotify to load your top artists</h3>
+			{!auth.spotifyIsLoggedIn() ? (
+				<div className="sign-in-prompt">
+					<h3>Log in with Spotify to load your top artists</h3>
 
-							<Link to="/auth/login">
-								<Button variant="contained" color="primary" size="small">
-									Log in with Spotify
-								</Button>
-							</Link>
-						</div>
-					) : (
-						<h2>Failed to get your top Spotify artists</h2>
+					<Link to="/auth/login">
+						<Button variant="contained" color="primary" size="small">
+							Log in with Spotify
+						</Button>
+					</Link>
+				</div>
+			) : (
+				<>
+					{loadingArtists && (
+						<Loader
+							messages={[
+								"Loading your top Spotify artists...",
+								"Getting artist locations...",
+								"Getting location information...",
+							]}
+							messageGap={7}
+						/>
 					)}
 				</>
-			) : null}
+			)}
 
 			<div className="map-container">
 				<ArtistMap

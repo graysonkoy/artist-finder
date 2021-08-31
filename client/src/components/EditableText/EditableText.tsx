@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import AutosizeInput from "react-input-autosize";
 
 import "./EditableText.scss";

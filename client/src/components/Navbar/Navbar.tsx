@@ -1,4 +1,10 @@
-import { AppBar, Button, Link, makeStyles, Toolbar } from "@material-ui/core";
+import React, {
+	AppBar,
+	Button,
+	Link,
+	makeStyles,
+	Toolbar,
+} from "@material-ui/core";
 import { ReactElement, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
