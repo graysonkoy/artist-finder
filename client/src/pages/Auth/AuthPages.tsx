@@ -4,13 +4,37 @@ import { Button } from "@material-ui/core";
 import AuthContext from "../../context/AuthContext";
 
 import "./AuthPages.scss";
+import Loader from "../../components/Loader/Loader";
 
 export const AuthLogin = (): ReactElement => {
+	const [error, setError] = useState(false);
+
 	const auth = useContext(AuthContext);
 
-	window.location.href = auth.spotifyGetAuthUrl();
+	useEffect(() => {
+		setError(false);
 
-	return <div className="auth"></div>;
+		auth
+			.spotifyGetAuthUrl()
+			.then((url) => (location.href = url))
+			.catch(() => setError(true));
+	}, []);
+
+	return (
+		<div className="auth">
+			{!error ? (
+				<Loader messages={["Logging in to Spotify..."]} />
+			) : (
+				<h2>Failed to log in, please try again later</h2>
+			)}
+
+			<Link to="/">
+				<Button variant="contained" color="primary">
+					Go back
+				</Button>
+			</Link>
+		</div>
+	);
 };
 
 export const AuthRedirect = (): ReactElement => {
@@ -35,11 +59,11 @@ export const AuthRedirect = (): ReactElement => {
 	return (
 		<div className="auth">
 			{loggingIn ? (
-				<h2>Logging in to Spotify...</h2>
-			) : !code ? (
-				<h2>Failed to authenticate Spotify</h2>
+				<Loader messages={["Logging in to Spotify..."]} />
+			) : code ? (
+				<Loader messages={["Logged in, redirecting..."]} />
 			) : (
-				<h2>Logged in, redirecting...</h2>
+				<h2>Failed to authenticate Spotify</h2>
 			)}
 
 			<Link to="/">

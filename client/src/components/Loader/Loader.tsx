@@ -12,18 +12,24 @@ interface LoaderProps {
 
 const Loader = ({ messages, messageGap = 5000 }: LoaderProps): ReactElement => {
 	const [messageIndex, setMessageIndex] = useState(0);
-	const [message, setMessage] = useState("Loading...");
+	const [message, setMessage] = useState(() =>
+		messages.length == 0 ? "Loading..." : messages[0]
+	);
 
 	const getNextMessage = () => {
 		setMessageIndex((lastMessageIndex) => lastMessageIndex + 1);
 	};
 
 	useEffect(() => {
+		setMessageIndex(0);
+	}, [messages]);
+
+	useEffect(() => {
 		setMessage(messages[messageIndex]);
 
 		if (messageIndex + 1 < messages.length)
 			setTimeout(() => getNextMessage(), messageGap);
-	}, [messageIndex]);
+	}, [messages, messageIndex]);
 
 	return (
 		<div className="loader">

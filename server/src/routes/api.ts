@@ -25,6 +25,18 @@ export class ApiError extends Error {
 	}
 }
 
+apiRouter.get("/spotify/getAuthUrl", (req, res) => {
+	const baseUrl = "https://accounts.spotify.com";
+	const scopes = ["user-top-read"];
+
+	const url = `${baseUrl}/authorize?client_id=${process.env.SPOTIFY_CLIENT_ID}&response_type=code&redirect_uri=${process.env.SPOTIFY_REDIRECT_URI}&scope=${scopes}`;
+
+	return res.json({
+		error: false,
+		data: url,
+	});
+});
+
 apiRouter.get(
 	"/spotify/auth",
 

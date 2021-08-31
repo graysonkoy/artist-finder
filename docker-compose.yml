@@ -4,3 +4,4 @@ services:
     build: .
     ports:
       - "80:3001"
+    image: gkoy/artist-finder
