@@ -9,7 +9,7 @@ import ApiContext from "./ApiContext";
 
 export interface AuthContextInterface {
 	spotifyGetAuthUrl: () => string;
-	spotifyLogin: (newAuth: string | null) => Promise<any>;
+	spotifyLogin: (newAuth: string | null) => Promise<void>;
 	spotifyLogout: () => void;
 	spotifyIsLoggedIn: () => boolean;
 
@@ -56,7 +56,7 @@ export const AuthStore: FunctionComponent = ({ children }) => {
 		)}`;
 	};
 
-	const spotifyLogin = async (authCode: string | null): Promise<any> => {
+	const spotifyLogin = async (authCode: string | null): Promise<void> => {
 		const accessToken = (
 			await Api.get("/api/spotify/auth", {
 				authCode: authCode,
@@ -77,7 +77,7 @@ export const AuthStore: FunctionComponent = ({ children }) => {
 		return !!spotifyTokens;
 	};
 
-	const apiGet = async (url: string, params: any = {}): Promise<any> => {
+	const apiGet = async (url: string, params = {}): Promise<any> => {
 		return await Api.get(url, {
 			...params,
 			spotifyAccessToken: spotifyTokens ? spotifyTokens.accessToken : null,

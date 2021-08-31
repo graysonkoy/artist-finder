@@ -37,13 +37,11 @@ const iconDraggable = L.icon({
 interface DraggableMarkerProps {
 	startPos: [number, number];
 	onSelect: (area: string) => void;
-	onDeselect: () => void;
 }
 
 const DraggableMarker = ({
 	startPos,
 	onSelect,
-	onDeselect,
 }: DraggableMarkerProps): ReactElement => {
 	const [position, setPosition] = useState(startPos);
 
@@ -90,12 +88,10 @@ const DraggableMarker = ({
 
 interface YourLocationMarkerProps {
 	onSelect: (area: string) => void;
-	onDeselect: () => void;
 }
 
 const YourLocationMarker = ({
 	onSelect,
-	onDeselect,
 }: YourLocationMarkerProps): ReactElement => {
 	const [position, setPosition] = useState<any | null>(null);
 	const [area, setArea] = useState<string | null>(null);
@@ -115,7 +111,7 @@ const YourLocationMarker = ({
 			<Marker
 				zIndexOffset={100}
 				icon={iconYours}
-				position={position as any}
+				position={position}
 				eventHandlers={{
 					click: (e) => {
 						onSelect(area);
@@ -134,15 +130,10 @@ const YourLocationMarker = ({
 interface ArtistMapProps {
 	artists?: TopArtist[];
 	onSelect: (data: string) => void;
-	onDeselect: () => void;
 }
 
-const ArtistMap = ({
-	artists,
-	onSelect,
-	onDeselect,
-}: ArtistMapProps): ReactElement => {
-	const getArtistPos = (artist: TopArtist) => [
+const ArtistMap = ({ artists, onSelect }: ArtistMapProps): ReactElement => {
+	const getArtistPos = (artist: TopArtist): [number, number] => [
 		artist.openstreetmap.latitude,
 		artist.openstreetmap.longitude,
 	];
@@ -172,10 +163,10 @@ const ArtistMap = ({
 	};
 
 	// group up artists
-	const artistsInAreas: any = {};
+	const artistsInAreas: { [key: string]: TopArtist[] } = {};
 	if (artists) {
 		for (const artist of artists) {
-			const area: string = artist.musicbrainz.area.name;
+			const area = artist.musicbrainz.area.name as string;
 			if (!(area in artistsInAreas)) artistsInAreas[area] = [];
 			artistsInAreas[area].push(artist);
 		}
@@ -208,19 +199,18 @@ const ArtistMap = ({
 				<DraggableMarker
 					startPos={[-33.90689555128868, 151.23229980468753]}
 					onSelect={onSelect}
-					onDeselect={onDeselect}
 				/>
 
-				<YourLocationMarker onSelect={onSelect} onDeselect={onDeselect} />
+				<YourLocationMarker onSelect={onSelect} />
 
 				{Object.entries(artistsInAreas).map(
-					([area, artist]: [any, any]): ReactElement => (
+					([area, artist]: [string, TopArtist[]]): ReactElement => (
 						<Marker
 							icon={icon}
 							key={`${area} marker`}
-							position={getArtistPos(artist[0]) as any}
+							position={getArtistPos(artist[0])}
 							eventHandlers={{
-								click: (e) => {
+								click: () => {
 									onSelect(area);
 								},
 							}}

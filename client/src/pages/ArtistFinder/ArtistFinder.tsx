@@ -1,6 +1,6 @@
 import React, { ReactElement, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, CircularProgress } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 
 import Loader from "../../components/Loader/Loader";
 import AuthContext from "../../context/AuthContext";
@@ -16,7 +16,7 @@ export interface ArtistInterface {
 	links: { [key: string]: string };
 	followers: string;
 	genres: string[];
-	images: any[];
+	images: Record<string, unknown>[];
 	popularity: number;
 }
 
@@ -25,10 +25,10 @@ export interface MusicBrainzData {
 	type: string;
 	gender: string;
 	country: string;
-	area: any;
-	birthArea: any;
-	life: any;
-	aliases: any;
+	area: Record<string, unknown>;
+	birthArea: Record<string, unknown>;
+	life: Record<string, unknown>;
+	aliases: Record<string, unknown>[];
 }
 
 export interface TopArtist {
@@ -38,7 +38,7 @@ export interface TopArtist {
 		popularity: number;
 		genres: string[];
 		spotifyFollowers: number;
-		images: any[];
+		images: Record<string, unknown>[];
 		urls: string[];
 	};
 	musicbrainz: MusicBrainzData;
@@ -106,7 +106,6 @@ const ArtistFinder = (): ReactElement => {
 				<ArtistMap
 					artists={artists}
 					onSelect={(data) => setSelectedArea(data)}
-					onDeselect={() => setSelectedArea(null)}
 				/>
 
 				<div className="marker-explanations">

@@ -9,6 +9,7 @@ RUN npm install --production --ignore-scripts
 # Build client
 COPY client ./
 ENV GENERATE_SOURCEMAP=false
+RUN npm install typescript
 RUN npm run build
 
 # ------------ Server build ------------ #
@@ -21,6 +22,7 @@ RUN npm install --production --ignore-scripts
 
 # Build server
 COPY server ./
+RUN npm install typescript
 RUN npm run build
 
 # ------------ Client+Server ------------ #

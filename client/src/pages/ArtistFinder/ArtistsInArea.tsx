@@ -7,7 +7,7 @@ import {
 	makeStyles,
 	TablePagination,
 } from "@material-ui/core";
-import { Autocomplete, Pagination } from "@material-ui/lab";
+import { Autocomplete } from "@material-ui/lab";
 
 import EditableText from "../../components/EditableText/EditableText";
 import Loader from "../../components/Loader/Loader";
@@ -28,10 +28,10 @@ export interface ArtistInArea {
 	musicbrainz: MusicBrainzData;
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
 	fixedCardContent: {
 		"&:last-child": {
-			paddingBottom: "16px", // -_-
+			paddingBottom: "16px", // fix pointless bottom padding in material-ui cards
 		},
 	},
 }));
@@ -62,7 +62,9 @@ const ArtistCard = ({ artist }: ArtistCardProps): ReactElement => {
 						<div className="info-name">
 							{artist.musicbrainz.type == "Person" ? "Born" : "Formed"}
 						</div>
-						<div className="info-value">{artist.musicbrainz.life.begin}</div>
+						<div className="info-value">
+							{artist.musicbrainz.life.begin as string}
+						</div>
 					</div>
 				);
 			}
@@ -71,7 +73,9 @@ const ArtistCard = ({ artist }: ArtistCardProps): ReactElement => {
 				elems.push(
 					<div key="died" className="artist-info">
 						<div className="info-name">Died</div>
-						<div className="info-value">{artist.musicbrainz.life.end}</div>
+						<div className="info-value">
+							{artist.musicbrainz.life.end as string}
+						</div>
 					</div>
 				);
 			}
@@ -81,7 +85,9 @@ const ArtistCard = ({ artist }: ArtistCardProps): ReactElement => {
 			elems.push(
 				<div key="born area" className="artist-info">
 					<div className="info-name">Born</div>
-					<div className="info-value">{artist.musicbrainz.birthArea.name}</div>
+					<div className="info-value">
+						{artist.musicbrainz.birthArea.name as string}
+					</div>
 				</div>
 			);
 		}
@@ -111,9 +117,9 @@ const ArtistCard = ({ artist }: ArtistCardProps): ReactElement => {
 							<div className="aliases">
 								Also known as{" "}
 								{artist.musicbrainz.aliases.map(
-									(alias: any, i: number): ReactElement => (
+									(alias, i): ReactElement => (
 										<span key={`alias-${i}`} className="alias">
-											{alias.name}
+											{alias.name as string}
 										</span>
 									)
 								)}
@@ -191,7 +197,7 @@ const ArtistsInArea = ({ area, genres }: ArtistsInAreaProps): ReactElement => {
 					options={genres}
 					filterSelectedOptions
 					onChange={(event, value) => setSelectedGenres(value)}
-					renderInput={(params: any) => (
+					renderInput={(params) => (
 						<TextField
 							{...params}
 							variant="outlined"
