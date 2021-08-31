@@ -63,8 +63,6 @@ const DraggableMarker = ({
 				else if (res.address.state) area = res.address.state;
 				else if (res.address.country) area = res.address.country;
 
-				console.log(area, position);
-
 				if (area) onSelect(area);
 			});
 	}, [position]);

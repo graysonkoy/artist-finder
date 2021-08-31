@@ -25,10 +25,6 @@ export const ApiStore: FunctionComponent = ({ children }) => {
 				params: parameters,
 			});
 
-			if (res.data.error) {
-				console.log("WHY", res.data);
-			}
-
 			return res.data.data;
 		} catch (e: any) {
 			const error = e.response?.data?.message;

@@ -22,6 +22,7 @@ export interface ArtistInterface {
 
 export interface MusicBrainzData {
 	id: string;
+	type: string;
 	gender: string;
 	country: string;
 	area: any;
@@ -62,8 +63,6 @@ const ArtistFinder = (): ReactElement => {
 
 		if (auth.spotifyIsLoggedIn()) {
 			setLoadingArtists(true);
-
-			console.log("Getting top artists");
 
 			auth
 				.apiGet("/api/get-top-artist-locations")

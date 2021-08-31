@@ -44,8 +44,6 @@ export const AuthStore: FunctionComponent = ({ children }) => {
 		});
 
 	useEffect(() => {
-		console.log("Storing tokens:", spotifyTokens);
-
 		// store token
 		if (spotifyTokens)
 			localStorage.setItem("spotify-tokens", JSON.stringify(spotifyTokens));
@@ -59,28 +57,20 @@ export const AuthStore: FunctionComponent = ({ children }) => {
 	};
 
 	const spotifyLogin = async (authCode: string | null): Promise<any> => {
-		try {
-			const accessToken = (
-				await Api.get("/api/spotify/auth", {
-					authCode: authCode,
-				})
-			).token;
+		const accessToken = (
+			await Api.get("/api/spotify/auth", {
+				authCode: authCode,
+			})
+		).token;
 
-			setSpotifyTokens({
-				authCode,
-				accessToken,
-			} as SpotifyTokenInterface);
-
-			console.log("Set tokens", authCode, accessToken);
-		} catch (e) {
-			console.log(e);
-		}
+		setSpotifyTokens({
+			authCode,
+			accessToken,
+		} as SpotifyTokenInterface);
 	};
 
 	const spotifyLogout = (): void => {
 		setSpotifyTokens(null);
-
-		console.log("Unset tokens", null);
 	};
 
 	const spotifyIsLoggedIn = (): boolean => {
