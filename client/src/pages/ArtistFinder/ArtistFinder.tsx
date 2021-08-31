@@ -97,7 +97,7 @@ const ArtistFinder = (): ReactElement => {
 								"Getting artist locations...",
 								"Getting location information...",
 							]}
-							messageGap={7}
+							messageGap={7000}
 						/>
 					)}
 				</>
