@@ -13,7 +13,8 @@
 		"express-validator": "^6.12.1",
 		"helmet": "^4.6.0",
 		"morgan": "^1.10.0",
-		"musicbrainz-api": "^0.6.0"
+		"musicbrainz-api": "^0.6.0",
+		"path": "^0.12.7"
 	},
 	"devDependencies": {
 		"typescript": "^4.4.2",

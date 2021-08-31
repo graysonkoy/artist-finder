@@ -30,9 +30,10 @@ WORKDIR /app
 COPY --from=client-build /app/client/node_modules client/node_modules
 COPY --from=client-build /app/client/build client
 
-COPY --from=server-build /app/server/.env .env
 COPY --from=server-build /app/server/node_modules node_modules
 COPY --from=server-build /app/server/dist .
+
+COPY .env .env
 
 # Set environment variables
 ENV NODE_ENV=production
