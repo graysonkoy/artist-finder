@@ -3,5 +3,5 @@ services:
   app:
     build: .
     ports:
-      - "80:3001"
+      - "80:8000"
     image: gkoy/artist-finder

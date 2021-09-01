@@ -35,12 +35,12 @@ COPY --from=server-build /app/server/dist ./
 
 COPY --from=client-build /app/client/build client
 
-COPY .env .env
+COPY server/.env .env
 
 # Set environment variables
 ENV NODE_ENV=production
-ENV PORT=3001
-EXPOSE 3001
+ENV PORT=8000
+EXPOSE 8000
 
 # Run the application
 CMD ["node", "index"]

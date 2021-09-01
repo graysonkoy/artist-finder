@@ -2,7 +2,7 @@
 
 ## Mashups/Docker Project
 
-### .env format
+### .env format (server/.env)
 
 ```
 SPOTIFY_CLIENT_ID
