@@ -35,8 +35,6 @@ COPY --from=server-build /app/server/dist ./
 
 COPY --from=client-build /app/client/build client
 
-COPY server/.env .env
-
 # Set environment variables
 ENV NODE_ENV=production
 ENV PORT=8000
