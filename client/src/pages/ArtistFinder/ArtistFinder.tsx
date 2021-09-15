@@ -90,14 +90,7 @@ const ArtistFinder = (): ReactElement => {
 			) : (
 				<>
 					{loadingArtists && (
-						<Loader
-							messages={[
-								"Loading your top Spotify artists...",
-								"Getting artist locations...",
-								"Getting location information...",
-							]}
-							messageGap={7000}
-						/>
+						<Loader message="Loading your top Spotify artists..." />
 					)}
 				</>
 			)}

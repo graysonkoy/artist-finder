@@ -23,7 +23,7 @@ export const AuthLogin = (): ReactElement => {
 	return (
 		<div className="auth">
 			{!error ? (
-				<Loader messages={["Logging in to Spotify..."]} />
+				<Loader message="Logging in to Spotify..." />
 			) : (
 				<h2>Failed to log in, please try again later</h2>
 			)}
@@ -59,9 +59,9 @@ export const AuthRedirect = (): ReactElement => {
 	return (
 		<div className="auth">
 			{loggingIn ? (
-				<Loader messages={["Logging in to Spotify..."]} />
+				<Loader message="Logging in to Spotify..." />
 			) : code ? (
-				<Loader messages={["Logged in, redirecting..."]} />
+				<Loader message="Logged in, redirecting..." />
 			) : (
 				<h2>Failed to authenticate Spotify</h2>
 			)}

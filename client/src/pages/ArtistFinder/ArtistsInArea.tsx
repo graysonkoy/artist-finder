@@ -216,7 +216,7 @@ const ArtistsInArea = ({ area, genres }: ArtistsInAreaProps): ReactElement => {
 			{searched && (
 				<>
 					{loading ? (
-						<Loader messages={["Finding artists"]} />
+						<Loader message="Finding artists" />
 					) : !artistsInArea ? (
 						<h2>Failed to get artists</h2>
 					) : artistsInArea.length == 0 ? (
