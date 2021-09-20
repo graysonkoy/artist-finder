@@ -2,9 +2,9 @@ import React, { ReactElement, useContext, useEffect, useState } from "react";
 import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
 import { Button } from "@material-ui/core";
 import AuthContext from "../../context/AuthContext";
+import Loader from "../../components/Loader/Loader";
 
 import "./AuthPages.scss";
-import Loader from "../../components/Loader/Loader";
 
 export const AuthLogin = (): ReactElement => {
 	const [error, setError] = useState(false);
@@ -16,7 +16,7 @@ export const AuthLogin = (): ReactElement => {
 
 		auth
 			.spotifyGetAuthUrl()
-			.then((url) => (location.href = url))
+			.then((url) => (window.location.href = url))
 			.catch(() => setError(true));
 	}, []);
 
