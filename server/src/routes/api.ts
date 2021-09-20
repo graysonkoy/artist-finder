@@ -168,7 +168,7 @@ apiRouter.get(
 			let query = "";
 			if (genres) {
 				query = `area:"${area}" AND (${genres
-					.map((genre: any) => `genre:"${genre}"`)
+					.map((genre: any) => `tag:"${genre}"`)
 					.join(" OR ")})`;
 			} else {
 				query = `area:"${area}"`;
