@@ -113,7 +113,7 @@ const YourLocationMarker = ({
 				icon={iconYours}
 				position={position}
 				eventHandlers={{
-					click: (e) => {
+					click: () => {
 						onSelect(area);
 					},
 				}}
