@@ -1,4 +1,4 @@
-import express, { response, Router } from "express";
+import express from "express";
 import { query } from "express-validator";
 import { MusicBrainzApi } from "musicbrainz-api";
 import axios from "axios";
@@ -25,6 +25,10 @@ export class ApiError extends Error {
 	}
 }
 
+/**
+ * Gets the Spotify authentication URL for the application based off
+ * of the environment variables
+ */
 apiRouter.get("/spotify/getAuthUrl", (req, res) => {
 	const baseUrl = "https://accounts.spotify.com";
 	const scopes = ["user-top-read"];
@@ -37,6 +41,10 @@ apiRouter.get("/spotify/getAuthUrl", (req, res) => {
 	});
 });
 
+/**
+ * Authenticates the user through Spotify after they have logged in
+ * @param {string} authCode Spotify authentication code
+ */
 apiRouter.get(
 	"/spotify/auth",
 
@@ -84,6 +92,11 @@ const spotifyHeaders = (accessToken: string) => ({
 	},
 });
 
+/**
+ * Converts latitude/longitude to a location name
+ * @param {number} latitude
+ * @param {number} longitude
+ */
 apiRouter.get(
 	"/get-location",
 
@@ -110,6 +123,9 @@ apiRouter.get(
 	}
 );
 
+/**
+ * Estimates the current user's location based off of their IP address
+ */
 apiRouter.get("/get-my-location", async (req, res) => {
 	try {
 		const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
@@ -126,6 +142,9 @@ apiRouter.get("/get-my-location", async (req, res) => {
 	}
 });
 
+/**
+ * Returns a list of genres
+ */
 apiRouter.get(
 	"/get-genre-list",
 
@@ -141,6 +160,13 @@ apiRouter.get(
 	}
 );
 
+/**
+ * Gets a list of artists in a given area
+ * Can also be filtered by genre
+ * @param {string} area Area name to search
+ * @param {string[]} genres Optional genres to filter by
+ * @param {number} numArtists Number of artists to find
+ */
 apiRouter.get(
 	"/get-artists-in-area",
 
@@ -210,6 +236,13 @@ apiRouter.get(
 	}
 );
 
+/**
+ * Gets the user's top Spotify artists along with information relating
+ * to each artist and their locations
+ * @param {string} spotifyAccessToken
+ * @param {string} topArtistTimeRange Spotify time range to find top artists in (long_term, medium_term, short_term)
+ * @param {number} numTopArtists Number of top artists to retrieve
+ */
 apiRouter.get(
 	"/get-top-artist-locations",
 

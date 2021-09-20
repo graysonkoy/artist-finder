@@ -151,11 +151,17 @@ const ArtistMap = ({ artists, onSelect }: ArtistMapProps): ReactElement => {
 			);
 
 			if (artist.musicbrainz.area)
-				elems.push(<div key={`${artist.musicbrainz.id}-from`}>From {artist.musicbrainz.area.name}</div>);
+				elems.push(
+					<div key={`${artist.musicbrainz.id}-from`}>
+						From {artist.musicbrainz.area.name}
+					</div>
+				);
 
 			if (artist.musicbrainz.birthArea)
 				elems.push(
-					<div key={`${artist.musicbrainz.id}-born-in`}>Born in {artist.musicbrainz.birthArea.name}</div>
+					<div key={`${artist.musicbrainz.id}-born-in`}>
+						Born in {artist.musicbrainz.birthArea.name}
+					</div>
 				);
 		}
 
