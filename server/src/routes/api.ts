@@ -112,8 +112,10 @@ apiRouter.get(
 
 apiRouter.get("/get-my-location", async (req, res) => {
 	try {
-		const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-		const ipRes: any = await axios.get(`https://freegeoip.app/json/${ip}`);
+		const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+		const ipRes: any = await axios.get(
+			`https://freegeoip.app/json/${ip != "127.0.0.1" ? ip : ""}`
+		);
 
 		return res.json({
 			error: false,
