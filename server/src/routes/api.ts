@@ -321,7 +321,11 @@ apiRouter.get(
 		const locationPromises: Promise<any>[] = [];
 
 		const areas = [
-			...new Set(artists.map((artist) => artist.musicbrainz.area.name)),
+			...new Set(
+				artists
+					.filter((artist) => artist.musicbrainz.area)
+					.map((artist) => artist.musicbrainz.area.name)
+			),
 		];
 
 		if (areas.length > 0) {
@@ -356,6 +360,8 @@ apiRouter.get(
 			// add location data to artists
 			for (const location of locations) {
 				for (const artist of artists) {
+					if (!artist.musicbrainz.area) continue;
+
 					if (artist.musicbrainz.area.name == location.area) {
 						artist.openstreetmap = {
 							latitude: location.data.lat,

@@ -172,6 +172,8 @@ const ArtistMap = ({ artists, onSelect }: ArtistMapProps): ReactElement => {
 	const artistsInAreas: { [key: string]: TopArtist[] } = {};
 	if (artists) {
 		for (const artist of artists) {
+			if (!artist.musicbrainz.area) continue;
+
 			const area = artist.musicbrainz.area.name as string;
 			if (!(area in artistsInAreas)) artistsInAreas[area] = [];
 			artistsInAreas[area].push(artist);
